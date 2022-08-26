@@ -25,10 +25,6 @@ func digiroot(n int) int {
 
 const url = "https://api.github.com/users/%s"
 
-type User struct {
-	Id int `json:"id"`
-}
-
 func fetchGHId(name string) (int, error) {
 	r, err := http.Get(fmt.Sprintf(url, name))
 	if err != nil {
@@ -40,7 +36,9 @@ func fetchGHId(name string) (int, error) {
 		return 0, err
 	}
 
-	var u User
+	u := struct {
+		Id int `json:"id"`
+	}{}
 	if err := json.Unmarshal(b, &u); err != nil {
 		return 0, err
 	}
